@@ -72,7 +72,7 @@ class migla_email_settings_class extends MIGLA_SEC
                           <a class='fa fa-caret-down' data-toggle='collapse' data-parent='.panel' href='#collapseOne' aria-expanded='true'></a>
                           </div>
                           <h2 class='panel-title'><div class='fa fa-cogs'></div>
-                          <?php echo __( "Set Email & Receipts for these form","migla-donation");?></h2>
+                          <?php echo __( "Set Emails & Receipts for these forms","migla-donation");?></h2>
                       </header>
 
                       <div id='collapseOne' class='panel-body collapse show'>

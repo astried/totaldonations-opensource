@@ -15,8 +15,8 @@ class migla_gotopage_class extends MIGLA_SEC
 	function menu_item() {
 		add_submenu_page(
 			'migla_donation_menu_page',
-			"Upgrade To Premium",
-			"<strong id=\"wfMenuCallout\" style=\"color: #FCB214;\">Upgrade To Premium</strong>",
+			"Upgrade To Full Version",
+			"<strong id=\"wfMenuCallout\" style=\"color: #FCB214;\">&hearts; Get More Features</strong>",
 			'read_dashboard',
 			'migla_goto_page',
 			array( $this, 'menu_page' )

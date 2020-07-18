@@ -8,7 +8,6 @@ if (!function_exists('miglaA_checkout')){
     	
     	try{
         	$objO = new MIGLA_OPTION;
-          	$is_use_nonce = $objO->get_option('migla_use_nonce') == 'yes';
           	
           	$nonce = sanitize_text_field($_POST['nonce']);
         

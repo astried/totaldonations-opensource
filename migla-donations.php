@@ -5,7 +5,7 @@
  Text Domain: migla-donation
  Domain Path: /languages
  Description: A plugin for accepting donations.
- Version: 3.0.2
+ Version: 3.0.6
  Author: Binti Brindamour and Astried Silvanie
  Author URI: https://totaldonations.com/
  License: GPL2

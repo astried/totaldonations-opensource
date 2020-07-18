@@ -9,7 +9,7 @@ if ( !class_exists( 'MIGLA_OPTION' ) )
 	    {
 	        global $wpdb;
 
-          $id = '';
+          	$id = '';
 
 					$sql = "SELECT id FROM {$wpdb->prefix}migla_options";
 					$sql .= " WHERE option_name = %s";
@@ -236,16 +236,6 @@ if ( !class_exists( 'MIGLA_OPTION' ) )
 			    }
 
 	        return $id;
-	    }
-
-	    public function get_log_by_session()
-	    {
-
-	    }
-
-	    public function get_log_by_id()
-	    {
-
 	    }
 	}
 }

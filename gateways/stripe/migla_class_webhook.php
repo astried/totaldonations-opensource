@@ -25,8 +25,10 @@ class migla_stripe_webhook_handler
   
 		}else if( $event_json->type == 'charge.refunded' ) 
 		{
-	        include_once TD_DIR_PATH . 'gateways/stripe/stripe-php-6.43.0/init.php';
-                	
+            if ( !class_exists( '\Stripe\Stripe' ) ){
+	           include_once TD_DIR_PATH . 'gateways/stripe/stripe-php-6.43.0/init.php';
+            }
+
             \Stripe\Stripe::setApiKey( migla_getSK() );
                 
             $charge_id = $event_json->data->object->id;

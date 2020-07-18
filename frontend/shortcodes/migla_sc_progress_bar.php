@@ -18,6 +18,7 @@ class Migla_ProgressBar_Shortcode
     		array(
     			'id' 	=> '',
     			'button' => 'no',
+                'link'  => '',
     			'button_text' => 'Donate Now',
     			'text' => '',
                 'button_class' => ''
@@ -37,6 +38,7 @@ class Migla_ProgressBar_Shortcode
 
             migla_shortcode_progressbar( $args['id'],
                     $args['button'] ,
+                    $args['link'],
                     $args['button_text'],
                     $args['text'],
                     $args['button_class']

@@ -57,15 +57,21 @@ function mg_update_order()
 function mg_campaign_draggable()
 {
     jQuery(".mg_campaign_list").sortable({
+        placeholder: ".formfield li",
         helper    : "clone",
         revert    : true,
         forcePlaceholderSize: true,
         axis    : 'y',
-        start: function (e, ui) {
+        start: function (e, ui) {         
                 },
         update: function (e, ui) {
                 },
         stop: function(e, ui){
+                  if( ui.item.attr("data-showed") == "yes"){
+                    ui.item.find(".mg_shown_cmp").attr("checked", true);
+                  }else{
+                    ui.item.find(".mg_hide_cmp").attr("checked", true);                    
+                  }
                 },
         received: function(e, ui){
                 }
@@ -77,9 +83,6 @@ function mg_campaign_draggable()
 function mg_add_campaign()
 {
     jQuery('#miglaAddCampaign').click(function(){
-
-        console.log('add campaign');
-
         var name    = change_to_html( jQuery('#mName').val() );
         var target  = jQuery('#mAmount').val();
         var form_id = '';
@@ -87,8 +90,8 @@ function mg_add_campaign()
 
         if( jQuery.trim(name) === ''  )
         {
-              alert('Please fill in the campaign name');
-              canceled( '#miglaAddCampaign' );
+            alert('Please fill in the campaign name');
+            canceled( '#miglaAddCampaign' );
         }else{
 
             var list = mg_get_campaignStructure();
@@ -106,8 +109,6 @@ function mg_add_campaign()
                         },
                   success: function( respnewcmp )
                           {
-                            console.log("Res:"+respnewcmp);
-
                             var message = respnewcmp.split(",");
                             form_id = message[0];
                             cmp_id = message[1];
@@ -118,7 +119,23 @@ function mg_add_campaign()
                                 jQuery('ul.mg_campaign_list').empty();
                             }
 
-                            jQuery(line_str).prependTo( jQuery('ul.mg_campaign_list') );
+                            jQuery(line_str).prependTo( jQuery('ul.mg_campaign_list') ); 
+
+                            jQuery(".mg_shown_cmp").click(function(){
+                              if( jQuery(this).is(":checked") ){
+                                jQuery(this).closest(".formfield").attr("data-showed", "yes");
+                              }else{
+                                jQuery(this).closest(".formfield").attr("data-showed", "no");
+                              }
+                            });
+
+                            jQuery(".mg_hide_cmp").click(function(){
+                              if( jQuery(this).is(":checked") ){
+                                jQuery(this).closest(".formfield").attr("data-showed", "no");
+                              }else{
+                                jQuery(this).closest(".formfield").attr("data-showed", "yes");
+                              }
+                            });                                
 
                           },
                   error: function(xhr, status, error)
@@ -127,13 +144,11 @@ function mg_add_campaign()
                           },
                   complete : function(xhr, status, error)
                             {
-                                console.log(form_id + ',' + cmp_id);
+                              
                             }
             }); //outer ajax
 
-            console.log("try");
-
-            saved('#miglaAddCampaign');
+            saved('#miglaAddCampaign');           
 
        }//trim
 
@@ -167,8 +182,6 @@ function mg_save_campaign()
 
             changeList.push(temp);
         })
-
-        console.log(changeList);
 
         var list = mg_get_campaignStructure();
 
@@ -288,7 +301,7 @@ function mg_add_campaign_lines( label, target, form_id, id )
 
    var lbl = change_to_html( label );
 
-    newComer = newComer + "<li class='ui-state-default formfield formfield_campain clearfix'>";
+    newComer = newComer + "<li class='ui-state-default formfield clearfix formfield_campaign' data-showed='yes'>";
     newComer = newComer + "<input type='hidden' name='oldlabel' value='"+lbl+"' />";
     newComer = newComer + "<input type='hidden' name='label' value='"+lbl+"' />";
     newComer = newComer + "<input type='hidden' name='target' value='"+target+"' />";
@@ -308,11 +321,15 @@ function mg_add_campaign_lines( label, target, form_id, id )
     newComer = newComer + '<input type="text" value="[totaldonations_progressbar id=&#39;2&#39;]" class="mg_label-shortcode">';
     newComer = newComer + "</div>";
 
+    newComer = newComer + "<div class='col-sm-2 col-xs-12'>";
+    newComer = newComer + '<input type="text" value="[totaldonations_circlebar id=&#39;2&#39;]" class="mg_label-shortcode">';
+    newComer = newComer + "</div>";
+
      var c = countAll();
      c = c + 1;
      newComer = newComer + "<div class='control-radio-sortable col-sm-2 col-xs-12'>";
-     newComer = newComer + "<span><label><input type='radio' name=r'"+c+"'  value='1' checked='checked' > Show </label></span>";
-     newComer = newComer + "<span><label><input type='radio' name=r'"+c+"'  value='-1' > Deactivate </label></span>";
+     newComer = newComer + "<span><label><input type='radio' name='r-"+c+"' value='1' checked='checked' class='statusShow mg_shown_cmp'> Show </label></span>";
+     newComer = newComer + "<span><label><input type='radio' name='r-"+c+"' value='-1' class='statusShow mg_hide_cmp'> Deactivate </label></span>";
 
      newComer = newComer + "<span><button class='removeCampaignField' data-toggle='modal' data-target='#confirm-delete'><i class='fa fa-fw fa-trash'></i></button></span>";
      newComer = newComer + "</div>";
@@ -1971,8 +1988,21 @@ jQuery(document).ready(function(){
       }
     });
 
-    console.log("End home");
-    
+    jQuery(".mg_shown_cmp").click(function(){
+      if( jQuery(this).is(":checked") ){
+        jQuery(this).closest(".formfield").attr("data-showed", "yes");
+      }else{
+        jQuery(this).closest(".formfield").attr("data-showed", "no");
+      }
+    });
+
+    jQuery(".mg_hide_cmp").click(function(){
+      if( jQuery(this).is(":checked") ){
+        jQuery(this).closest(".formfield").attr("data-showed", "no");
+      }else{
+        jQuery(this).closest(".formfield").attr("data-showed", "yes");
+      }
+    });    
     
     jQuery(".mg-li-tab").click(function(){
         jQuery(".mg-li-tab").removeClass("active");

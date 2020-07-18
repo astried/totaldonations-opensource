@@ -8,7 +8,10 @@ if ( !class_exists( 'TotalDonations' ) )
 	    static function init_path()
 		{
 			if( ! defined( 'Totaldonations_VERSION' ) )
-				define( 'Totaldonations_VERSION', '3.0.1-free' );
+				define( 'Totaldonations_VERSION', '3.0.6' );
+
+			if( ! defined( 'Totaldonations_FREE' ) )
+				define( 'Totaldonations_FREE', 'yes' );
 
 			if( ! defined( 'Totaldonations_FILE' ) )
 				define( 'Totaldonations_FILE', __FILE__ );
@@ -78,10 +81,12 @@ if ( !class_exists( 'TotalDonations' ) )
 
 				include_once Totaldonations_DIR_PATH . 'frontend/shortcodes/migla_sc_form.php';
 				include_once Totaldonations_DIR_PATH . 'frontend/shortcodes/migla_sc_progress_bar.php';
+				include_once Totaldonations_DIR_PATH . 'frontend/shortcodes/migla_sc_circle.php';
 				include_once Totaldonations_DIR_PATH . 'frontend/shortcodes/migla_sc_thankyou_page.php';
 			}
 
 			include_once Totaldonations_DIR_PATH . 'frontend/widgets/migla-bar-widget.php';
+			include_once Totaldonations_DIR_PATH . 'frontend/widgets/migla-circle-widget.php';
 	    }
 
 		static function author_admin_notice(){
@@ -89,37 +94,52 @@ if ( !class_exists( 'TotalDonations' ) )
 			$objO = new MIGLA_OPTION;
       		$paypalemails = $objO->get_option('migla_paypal_emails');
 
-      		if( empty($paypalemails) ){
-			    echo '<div class="notice notice-info is-dismissible migla_watermark">
-			        <p><strong>TotalDonations</strong> - Your PayPal account information hasn\'t been filled in yet. Please fill in the details <a href="'.get_admin_url().'admin.php?page=migla_donation_paypal_settings_page">here</a> to start collecting donations.</p>
-			        </div>';    			
+      		$paypal_dismiss = $objO->get_option('migla_paypal_isdismiss');
+      		$stripe_dismiss = $objO->get_option('migla_stripe_isdismiss');
+
+      		if($paypal_dismiss=="yes")
+      		{
+      		}else{
+	      		if( empty($paypalemails) ){
+				    echo '<div class="notice notice-info migla_watermark migla_dismiss migla_paypal-dissmiss">
+				        <p><strong>TotalDonations</strong> - Your PayPal account information hasn\'t been filled in yet. Please fill in the details <a href="'.get_admin_url().'admin.php?page=migla_donation_paypal_settings_page">here</a> to start collecting donations.</p>
+				        <button type="button" class="migla_notice-dismiss migla_paypal-dismiss-btn"></button>
+				        </div>';    			
+	      		}
       		}
 
-      		$testSK = $objO->get_option('migla_testSK');
-		    $testPK = $objO->get_option('migla_testPK');
-		    $liveSK = $objO->get_option('migla_liveSK');
-		    $livePK = $objO->get_option('migla_livePK');
-		    $stripeMode = $objO->get_option('migla_stripemode');
+      		if($stripe_dismiss=="yes")
+      		{
+      		}else{
+	      		$testSK = $objO->get_option('migla_testSK');
+			    $testPK = $objO->get_option('migla_testPK');
+			    $liveSK = $objO->get_option('migla_liveSK');
+			    $livePK = $objO->get_option('migla_livePK');
+			    $stripeMode = $objO->get_option('migla_stripemode');
 
-		    if( $stripeMode == "test" ){
-		    	if( empty($testSK) || empty($testPK) ){
-					echo '<div class="notice notice-info is-dismissible migla_watermark">
-				        <p><strong>TotalDonations</strong> - Stripe is in \'test\' mode. Please set it to \'live\' mode in order to collect donations. Your Stripe account information hasn\'t been filled in yet. Please fill in the details <a href="'.get_admin_url().'admin.php?page=migla_stripe_setting_page">here</a> to start collecting donations.</p>
-				        </div>';  
-		    	}else{
-		    		echo '<div class="notice notice-info is-dismissible migla_watermark">
-				        <p><strong>TotalDonations</strong> - Stripe is in test mode. Please set it to live  mode in order to collect donations.</p>
-				        </div>';  
-		    	}
-		    }else{
-				if( empty($liveSK) || empty($livePK) ){
-					echo '<div class="notice notice-info is-dismissible migla_watermark">
-				        <p><strong>TotalDonations</strong> - Your Stripe account information hasn\'t been filled in yet. Please fill in the details <a href="'.get_admin_url().'admin.php?page=migla_stripe_setting_page">here</a> to start collecting donations.</p>
-				        </div>';  
-		    	}
-		    }//test mode
+			    if( $stripeMode == "test" ){
+			    	if( empty($testSK) || empty($testPK) ){
+						echo '<div class="notice notice-info migla_dismiss migla_watermark migla_stripe-dissmiss">
+					        <p><strong>TotalDonations</strong> - Stripe is in \'test\' mode. Please set it to \'live\' mode in order to collect donations. Your Stripe account information hasn\'t been filled in yet. Please fill in the details <a href="'.get_admin_url().'admin.php?page=migla_stripe_setting_page">here</a> to start collecting donations.</p>
+					        <button type="button" class="migla_notice-dismiss migla_stripe-dismiss-btn"></button>
+					        </div>';  
+			    	}else{
+			    		echo '<div class="notice notice-info migla_dismiss migla_watermark migla_stripe-dissmiss">
+					        <p><strong>TotalDonations</strong> - Stripe is in test mode. Please set it to live  mode in order to collect donations.</p>
+					        <button type="button" class="migla_notice-dismiss migla_stripe-dismiss-btn"></button>
+					        </div>';  
+			    	}
+			    }else{
+					if( empty($liveSK) || empty($livePK) ){
+						echo '<div class="notice notice-info migla_dismiss migla_watermark migla_stripe-dissmiss">
+					        <p><strong>TotalDonations</strong> - Your Stripe account information hasn\'t been filled in yet. Please fill in the details <a href="'.get_admin_url().'admin.php?page=migla_stripe_setting_page">here</a> to start collecting donations.</p>
+					        <button type="button" class="migla_notice-dismiss migla_stripe-dismiss-btn"></button>
+					        </div>';  
+			    	}
+			    }//test mode
+
+			}
 		}
-
 
 	    static function donation_active_trigger( $networkwide )
 		{
@@ -182,6 +202,7 @@ if ( !class_exists( 'TotalDonations' ) )
 
 					$objO::init( 'migla_undesignLabel', serialize($saved), 'text' );
 					$objO::init( 'migla_hideUndesignated', 'no', 'text');
+
 					//THEME SETTINGS
 					$objO::init( 'migla_tabcolor', '#eeeeee', 'text' );
 					$objO::init( 'migla_2ndbgcolor' , '#fafafa,1', 'text' );
@@ -208,6 +229,24 @@ if ( !class_exists( 'TotalDonations' ) )
 
 					$objO::init( 'migla_bar_style_effect' , $arr, 'array' );
 
+			        $circle = array();
+			        $circle['size'] = 250;
+			        $circle['start_angle'] = 0; 
+			        $circle['thickness'] = 20;
+			        $circle['reverse'] = 'yes';
+			        $circle['line_cap'] = 'round';
+			        $circle['fill'] = '#428bca';
+			        $circle['animation'] = 'back_forth';
+			        $circle['inside'] = 'percentage';
+			        $circle['inner_font_size'] = '32';
+			        
+			        $objO::init( 'migla_circle_settings', $circle, 'array' );
+
+			        $objO::init( 'migla_circle_text1', 'Total', 'text' );
+			        $objO::init( 'migla_circle_text2', 'Target', 'text' );
+			        $objO::init( 'migla_circle_text3', 'Donor', 'text' );
+			        $objO::init( 'migla_circle_textalign', 'left_right', 'text' );
+        
 					$objO::init( 'migla_default_country', 'United States', 'text' );;
 					$objO::init( 'migla_default_currency' , 'USD', 'text' );
 					$objO::init( 'migla_thousandSep' , ',', 'text' );;
@@ -589,25 +628,39 @@ if ( !class_exists( 'TotalDonations' ) )
 
 			    $migla_is_in_the_hook = ( $hook == ("toplevel_page_migla_donation_menu_page") || ( strpos( $hook, 'migla'  ) !== false )  );
 
+			    $version = date ( "njYHi", time() );
+
+			    //Totaldonations script that shows everywhere
+			    wp_enqueue_style( 'migla_custom', Totaldonations_DIR_URL.'assets/css/migla_custom.css', array(), $version );
+
+			    wp_enqueue_script( 'migla_custom', Totaldonations_DIR_URL.'assets/js/migla_custom-script.js', 
+			    					array('jquery', 'wp-color-picker'), 
+			    					$version);	
+
+				wp_localize_script( 'migla_custom', 'miglaAdminAjax',
+			            array( 'ajaxurl' => $ajax_url,
+			                   'nonce' => wp_create_nonce( 'migla-donate-nonce' )
+			                )
+			    		);			    
+
 			    if( $migla_is_in_the_hook )
-			    {
-                    $version = date ( "njYHi", time() );
-                    
-			      wp_enqueue_script( 'jquery' );
-			      wp_enqueue_script( 'jquery-ui-core' );
+			    {                    
+			      	wp_enqueue_script( 'jquery' );
+			      	wp_enqueue_script( 'jquery-ui-core' );
 
-			      wp_enqueue_style( 'miglabootstrap', Totaldonations_DIR_URL.'assets/plugins/bootstrap-4.0/bootstrap.min.css', array(), $version );
+			      	wp_enqueue_style( 'miglabootstrap', Totaldonations_DIR_URL.'assets/plugins/bootstrap-4.0/bootstrap.min.css', array(), $version );
 			      
-			      wp_enqueue_style( 'miglabootstrap-toggle', Totaldonations_DIR_URL.'assets/plugins/bootstrap-4.0/bootstrap-toggle.min.css', array(), $version );
+			      	wp_enqueue_style( 'miglabootstrap-toggle', Totaldonations_DIR_URL.'assets/plugins/bootstrap-4.0/bootstrap-toggle.min.css', array(), $version );
 			      
-			      wp_enqueue_style( 'miglafontawesome', Totaldonations_DIR_URL.'assets/css/font-awesome/css/font-awesome.css', array(), $version );			      
-			      wp_enqueue_style( 'miglaadmin', Totaldonations_DIR_URL.'assets/css/migla-admin.css', array(), $version  );
+			      	wp_enqueue_style( 'miglafontawesome', Totaldonations_DIR_URL.'assets/css/font-awesome/css/font-awesome.css', array(), $version );			      
+			      	wp_enqueue_style( 'miglaadmin', Totaldonations_DIR_URL.'assets/css/migla-admin.css', array(), $version  );
 
-			      wp_enqueue_script( 'miglageneric', Totaldonations_DIR_URL.'assets/js/migla_generic.js', array(), $version);
-			      wp_enqueue_script( 'miglarespond', Totaldonations_DIR_URL.'assets/plugins/others/respond.min.js', array(), $version);
+			      	wp_enqueue_script( 'migla_generic-function', Totaldonations_DIR_URL.'assets/js/migla_generic-function.js', array(), $version);
 
-			      wp_enqueue_script( 'miglabootstrap', Totaldonations_DIR_URL.'assets/plugins/bootstrap-4.0/js/bootstrap.min.js', array(), $version);
-			      wp_enqueue_script( 'miglabootstrap-toggle', Totaldonations_DIR_URL.'assets/plugins/bootstrap-4.0/js/bootstrap-toggle.min.js', array(), $version);
+			      	wp_enqueue_script( 'miglarespond', Totaldonations_DIR_URL.'assets/plugins/others/respond.min.js', array(), $version);
+
+			      	wp_enqueue_script( 'miglabootstrap', Totaldonations_DIR_URL.'assets/plugins/bootstrap-4.0/js/bootstrap.min.js', array(), $version);
+			      	wp_enqueue_script( 'miglabootstrap-toggle', Totaldonations_DIR_URL.'assets/plugins/bootstrap-4.0/js/bootstrap-toggle.min.js', array(), $version);
 
 			      if( $hook == ("toplevel_page_migla_donation_menu_page")  )
 			      {
@@ -758,18 +811,18 @@ if ( !class_exists( 'TotalDonations' ) )
 
 			      if( strpos( $hook , 'migla_donation_custom_theme') !== false )
 			      {
-			          wp_enqueue_style( 'wp-color-picker' );
+			          	wp_enqueue_style( 'wp-color-picker' );
 
-			          wp_enqueue_script( 'migla-color-themes-js', Totaldonations_DIR_URL.'assets/js/admin/admin-custom-themes.js',
-			                  array('jquery', 'wp-color-picker' )
-			          );
+			          	wp_enqueue_script( 'migla-color-themes-js', Totaldonations_DIR_URL.'assets/js/admin/admin-custom-themes.js',
+			                array('jquery', 'wp-color-picker' )
+			          	);
 
 
-			          wp_localize_script( 'migla-color-themes-js', 'miglaAdminAjax',
-			                  array(	'ajaxurl' => $ajax_url,
-			                                'nonce' => wp_create_nonce( 'migla-donate-nonce' )
-			                      )
-			          );
+			          	wp_localize_script( 'migla-color-themes-js', 'miglaAdminAjax',
+			                array(	'ajaxurl' => $ajax_url,
+			                        'nonce' => wp_create_nonce( 'migla-donate-nonce' )
+			                      	)
+			          	);
 			      }
 
 			      if( strpos(  $hook , 'migla_reports_page' ) !== false)

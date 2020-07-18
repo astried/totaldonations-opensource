@@ -394,7 +394,7 @@ class migla_reports_class extends MIGLA_SEC
                 		<input type="hidden" name="rep" value="yes">
                 		<input type="hidden" id='mg_frm_post_period' name="p" value="active">
                 	</form>
-            	    <section class="panel panel-featured-left panel-featured-primary">
+            	<section class="panel panel-featured-left panel-featured-primary">
             		<header class="panel-heading"><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
             		    <div class="panel-actions"><a class="fa fa-caret-down" data-toggle="collapse" data-parent=".panel" href="#collapseOne" aria-expanded="true"></a>
             		    </div>

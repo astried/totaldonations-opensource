@@ -1,21 +1,26 @@
 <?php
 add_action( 'widgets_init', 'totaldonations_bar_widget' );
 
-function totaldonations_bar_widget() {
+if (!function_exists('totaldonations_bar_widget'))
+{
+function totaldonations_bar_widget() 
+{
 	register_widget( 'totaldonations_bar_widget' );
 }
+}
 
+if ( !class_exists( 'totaldonations_bar_widget' ) )
+{
 class totaldonations_bar_widget extends WP_Widget
 {
-	function __construct(){
-		$widget_ops = array( 'classname' => 'totaldonations_bar_widget', 'description' => __('A widget that displays progress bar for total donation', 'localization') );
+	function __construct()
+    {
+		$widget_ops = array( 'classname' => 'totaldonations_bar_widget', 'description' => __('Displays a progress bar for Total Donations', 'localization') );
 
-		 /* Widget control settings. */
 		$control_ops = array( 'width' => 300, 'height' => 350, 'id_base' => 'totaldonations_bar_widget' );
 
-		/* Create the widget. */
-		WP_Widget::__construct( 'totaldonations_bar_widget', __('Total Donations Bar Widget','localization'), $widget_ops, $control_ops );
-	}
+		WP_Widget::__construct( 'totaldonations_bar_widget', __('Total Donations - Bar Widget','localization'), $widget_ops, $control_ops );
+    }
 
 	function widget( $args, $instance )
 	{
@@ -131,7 +136,7 @@ class totaldonations_bar_widget extends WP_Widget
 
             $info = $objO->get_option('migla_progbar_info');
 
-            $symbol = $objM->get_default_currency();
+            $symbol = $objM->get_currency_symbol();
             $thousandSep = $objM->get_default_thousand_separator();
             $decimalSep = $objM->get_default_decimal_separator();
 
@@ -149,13 +154,11 @@ class totaldonations_bar_widget extends WP_Widget
             $placement = strtolower( $objM->get_symbol_position() );
 
             if( $placement == 'before' ){
-              $before_total = $res_total[1];
-              $before_target = $res_target[1];
-              //$before_reminder = $res_reminder[1];
+              $before_total = $symbol;
+              $before_target = $symbol;
             }else{
-              $after_total = $res_total[1];
-              $after_target = $res_target[1];
-              //$after_reminder = $res_reminder[1];
+              $after_total = $symbol;
+              $after_target = $symbol;
             }
 
             $total_amount   = $before_total.' '.$res_total[0].' '.$after_total;
@@ -264,10 +267,6 @@ class totaldonations_bar_widget extends WP_Widget
 
 	}
 
-	/* ---------------------------- */
-	/* ------- Update Widget -------- */
-	/* ---------------------------- */
-
 	function update( $new_instance, $old_instance )
 	{
 		$instance = $old_instance;
@@ -305,21 +304,9 @@ class totaldonations_bar_widget extends WP_Widget
 		$instance['animated_stripes'] = $new_instance['animated_stripes'];
 		$instance['percentage']       = $new_instance['percentage'];
 
-		$instance['form_id']       = $new_instance['form_id'];
-        $instance['form_url']       = $new_instance['form_url'];
-
 		return $instance;
 	}
 
-	/* ---------------------------- */
-	/* ------- Widget Settings ------- */
-	/* ---------------------------- */
-
-	/**
-	 * Displays the widget settings controls on the widget panel.
-	 * Make use of the get_field_id() and get_field_name() function
-	 * when creating your form elements. This handles the confusing stuff.
-	 */
 
 	function form( $instance )
 	{
@@ -357,9 +344,6 @@ class totaldonations_bar_widget extends WP_Widget
 		$pulse            = $instance['pulse'];
 		$animated_stripes = $instance['animated_stripes'];
 		$percentage       = $instance['percentage'];
-
-		$form_id		= $instance['form_id'];
-		$form_url		= $instance['form_url'];
      }
 
      if( !isset($instance['title']) )
@@ -515,22 +499,22 @@ class totaldonations_bar_widget extends WP_Widget
           <input maxlength="2" size="2" type="number" id="<?php echo $this->get_field_id( 'boxshadow_color4' ); ?>" name="<?php echo $this->get_field_name( 'boxshadow_color4' ); ?>" value="<?php echo $boxshadow_color4; ?>" /></p>
 
           <p> <label ><?php _e('Well Box Shadow Color:', 'localization') ?></label>
-          <input maxlength="7" size="7" type="text" class='mg-color-field widefat' id="<?php echo $this->get_field_id( 'boxshadow_color5' ); ?>" name="<?php echo $this->get_field_name( 'boxshadow_color5' ); ?>" value="<?php echo $boxshadow_color5; ?>" />
+          <input maxlength="7" size="7" type="text" class='migla-color-field widefat' id="<?php echo $this->get_field_id( 'boxshadow_color5' ); ?>" name="<?php echo $this->get_field_name( 'boxshadow_color5' ); ?>" value="<?php echo $boxshadow_color5; ?>" />
 		</p>
 
  		<p>
 		  <label ><?php _e('Bar Color:', 'localization') ?></label>
-		  <input type="text" maxlength="7" size="7" class='mg-color-field widefat' id="<?php echo $this->get_field_id( 'barcolor' ); ?>" name="<?php echo $this->get_field_name( 'barcolor' ); ?>" value="<?php echo $barcolor; ?>" />
+		  <input type="text" maxlength="7" size="7" class='migla-color-field widefat' id="<?php echo $this->get_field_id( 'barcolor' ); ?>" name="<?php echo $this->get_field_name( 'barcolor' ); ?>" value="<?php echo $barcolor; ?>" />
 		</p>
 
  		<p>
 		  <label ><?php _e('Well Background:', 'localization') ?></label>
-		  <input type="text" maxlength="7" size="7" class='mg-color-field widefat' id="<?php echo $this->get_field_id( 'well_background' ); ?>" name="<?php echo $this->get_field_name( 'well_background' ); ?>" value="<?php echo $well_background; ?>" />
+		  <input type="text" maxlength="7" size="7" class='migla-color-field widefat' id="<?php echo $this->get_field_id( 'well_background' ); ?>" name="<?php echo $this->get_field_name( 'well_background' ); ?>" value="<?php echo $well_background; ?>" />
 		</p>
 
  		<p>
 		  <label ><?php _e('Well Shadows:', 'localization') ?></label>
-		  <input type="text" maxlength="7" size="7" class='mg-color-field widefat' id="<?php echo $this->get_field_id( 'well_shadows' ); ?>" name="<?php echo $this->get_field_name( 'well_shadows' ); ?>" value="<?php echo $well_shadows; ?>" />
+		  <input type="text" maxlength="7" size="7" class='migla-color-field widefat' id="<?php echo $this->get_field_id( 'well_shadows' ); ?>" name="<?php echo $this->get_field_name( 'well_shadows' ); ?>" value="<?php echo $well_shadows; ?>" />
 		</p>
 
  		<p>
@@ -611,8 +595,40 @@ class totaldonations_bar_widget extends WP_Widget
 
        <p> <label for="<?php echo $this->get_field_id('belowHTML'); ?>"><?php _e('Add HTML or Plain Text below:', 'localization') ?></label>
        <textarea  class="widefat"  id="<?php echo $this->get_field_id( 'belowHTML' ); ?>" name="<?php echo $this->get_field_name( 'belowHTML' ); ?>"  ><?php echo $belowHTML; ?></textarea><small><?php _e('shortcodes allowed: [campaign] [percentage] [backers] [amount]', 'localization') ?></small></p>
+	
 
-	<?php
+<script type="text/javascript">
+ 
+    ( function( $ ){
+        function initColorPicker( widget ) {
+            widget.find( '.migla-color-field' ).not('[id*="__i__"]').wpColorPicker( {
+                  change: function(event, ui){
+                            var theColor = ui.color.toString();
+                            var myID = jQuery(this).attr("id");
+                            $('#'+myID).closest(".widget").addClass("widget-dirty");
+                            $('#'+myID).closest(".widget").find('.widget-control-save').removeAttr("disabled");
+                          }//change
+            });
+        }
+ 
+        function onFormUpdate( event, widget ) {
+            initColorPicker( widget );
+        }
+ 
+        $( document ).on( 'widget-added widget-updated', onFormUpdate );
+ 
+        $( document ).ready( function() {
+            $( '.widget-inside:has(.migla-color-field)' ).each( function () {
+                initColorPicker( $( this ) );
+            } );
+        } );
+ 
+    }( jQuery ) );
+ 
+</script>
+
+    <?php     
 	}
+}
 }
 ?>

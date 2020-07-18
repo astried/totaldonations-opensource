@@ -55,3 +55,4 @@ if ( !class_exists( 'MIGLA_TIME' ) )
 		}		
 	}
 }
+?>

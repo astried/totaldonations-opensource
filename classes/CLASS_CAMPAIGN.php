@@ -34,7 +34,7 @@ if ( !class_exists( 'MIGLA_CAMPAIGN' ) )
 		            		"target" => $target,
 		            		"name" 	=> serialize($names),
 		            		"shown" => $shown,
-		            		"multi_list" => '0',
+		            		"multi_list" => '1',
  		            		"form_id"	=> 0
 		                ),
 		            	array( '%d', '%s', '%s', '%s','%d' )
@@ -42,7 +42,7 @@ if ( !class_exists( 'MIGLA_CAMPAIGN' ) )
 
 		  	$cmp_id = $wpdb->insert_id;
 
-				if( Totaldonations_VERSION != '3.0.1-free'  )
+				if( Totaldonations_FREE != 'yes'  )
 				{
 						$CForm_fields = new CForm_Fields;
 						$fields = $CForm_fields::form_fields();

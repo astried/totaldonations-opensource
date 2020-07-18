@@ -84,7 +84,7 @@ class migla_campaign_menu_class extends MIGLA_SEC
         </li>
         <li class="mg-li-tab">
               <a class="mg-li-a-tab" data-toggle="tab" href="#section2" aria-expanded="false">
-                <?php echo __("Form","migla-donations");?></a>
+                <?php echo __("Edit Form","migla-donations");?></a>
         </li>
     </ul>
 
@@ -235,7 +235,7 @@ class migla_campaign_menu_class extends MIGLA_SEC
 
       ?>
 
-    <li class='ui-state-default formfield clearfix formfield_campain'>
+    <li class='ui-state-default formfield clearfix formfield_campaign' data-showed="<?php if( $showed == '1' ) echo "yes";?>">
         <input type='hidden' name='label' class="cmp_label" value="<?php echo esc_html($nama);?>" />
         <input type='hidden' name='target' class="cmp_target" value="<?php echo esc_html($target);?>" />
         <input type='hidden' name='show' class="cmp_shown" value="<?php echo esc_html($showed);?>" />
@@ -281,18 +281,24 @@ class migla_campaign_menu_class extends MIGLA_SEC
         $class ="pink-highlight" ;
       }
       ?>
+
+
+        <div class="col-sm-2 col-xs-12 row">
+            <input type="text" value="[totaldonations_circlebar id='<?php echo esc_attr($cmpid);?>']" class="mg_label-shortcode" onclick="this.setSelectionRange(0, this.value.length)">
+        </div>
+
         <div class='control-radio-sortable col-sm-2 col-xs-12'>
 
         <span>
           <label>
-            <input type='radio' class="statusShow" name='cmp-shown-<?php echo esc_attr($idk);?>' value='1' <?php echo esc_attr($show);?> class='cmp-shown'/>
+            <input type='radio' class="statusShow mg_shown_cmp" name='cmp-shown-<?php echo esc_attr($idk);?>' value='1' <?php echo esc_attr($show);?> class='cmp-shown'/>
               <?php echo __(" Show","migla-donation");?>
           </label>
         </span>
 
         <span>
           <label>
-            <input type='radio' class="statusShow" name='cmp-shown-<?php echo esc_attr($idk);?>' value='-1' class='<?php echo esc_attr($class);?> cmp-shown' <?php echo esc_attr($da);?> />
+            <input type='radio' class="statusShow mg_hide_cmp" name='cmp-shown-<?php echo esc_attr($idk);?>' value='-1' class='<?php echo esc_attr($class);?> cmp-shown' <?php echo esc_attr($da);?> />
               <?php echo __(" Deactived","migla-donation");?>
           </label>
         </span>

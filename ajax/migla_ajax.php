@@ -104,7 +104,7 @@ function TotalDonationsAjax_new_campaign()
                 $i++;
             }
 
-            $objO->update( 'migla_campaign_order', $_list , 'array' );
+            $objO->update( 'migla_campaign_order', $_list , 'array' );          
         }
     }
 
@@ -740,6 +740,7 @@ function TotalDonationsAjax_update_user_access()
   		    }else if( strpos($role, 'totaldonation') >= 0 )
   		    {
   		        $u = new WP_User( $user );
+                $u->add_role('contributor');
   		        $u->add_role( $role );
   		    }
   	    }
@@ -751,8 +752,11 @@ function TotalDonationsAjax_update_user_access()
 
 //THEME
 $ajax_theme_list = array( 'TotalDonationsAjax_update_form_theme',
+                          'TotalDonationsAjax_update_progressBar_theme',
+                          'TotalDonationsAjax_update_circle_layout',
                           'TotalDonationsAjax_reset_theme',
-                          'TotalDonationsAjax_update_progressBar_theme'
+                          'TotalDonationsAjax_reset_progressbar',
+                          'TotalDonationsAjax_reset_circle'
                         );
 
 if (!function_exists('TotalDonationsAjax_update_form_theme')){
@@ -860,9 +864,20 @@ function TotalDonationsAjax_update_progressBar_theme()
                         );
         }
 
+        if( $objSEC->is_option_available( 'migla_progressbar_background' ) )
+        {
+            $effects = (array)$_POST['styleEffects'];
+
+            $effects_Array = array( 'Stripes' => sanitize_text_field($effects[0]),
+                                    'Pulse' => sanitize_text_field($effects[1]),
+                                    'AnimatedStripes' => sanitize_text_field($effects[2]),
+                                    'Percentage' => sanitize_text_field($effects[3])
+                                );
+
+            $objO->update( 'migla_bar_style_effect' , $effects_Array, 'array' );        
+        }
     }
 
-    echo "done";
     die();
 }
 }
@@ -877,22 +892,70 @@ function TotalDonationsAjax_reset_theme()
        //THEME SETTINGS
         $objO = new MIGLA_OPTION;
 
-        $objO->update('migla_tabcolor', '#eeeeee', 'text');
-        $objO->update( 'migla_2ndbgcolor' , '#FAFAFA,1', 'text' );
-        $objO->update( 'migla_2ndbgcolorb' , '#DDDDDD,1,1', 'text' );
-        $objO->update( 'migla_borderRadius' , '8,8,8,8', 'text' );
+        if( $objSEC->is_option_available('migla_tabcolor') ){
+            $objO->update('migla_tabcolor', '#eeeeee', 'text');
+        }
 
-        $objO->update( 'migla_bglevelcolor', '#eeeeee', 'text' );
-        $objO->update( 'migla_bglevelcoloractive', '#ba9cb5', 'text' );
-        $objO->update( 'migla_borderlevelcolor', '#b0b0b0', 'text' );
-        $objO->update( 'migla_borderlevel', '1', 'text' );
+        if( $objSEC->is_option_available('migla_2ndbgcolor') ){
+            $objO->update( 'migla_2ndbgcolor' , '#FAFAFA,1', 'text' );
+        }
+
+        if( $objSEC->is_option_available('migla_2ndbgcolorb') ){
+            $objO->update( 'migla_2ndbgcolorb' , '#DDDDDD,1,1', 'text' );
+        }
+
+        if( $objSEC->is_option_available('migla_borderRadius') ){
+            $objO->update( 'migla_borderRadius' , '8,8,8,8', 'text' );
+        }
+
+        if( $objSEC->is_option_available('migla_bglevelcolor') ){
+            $objO->update( 'migla_bglevelcolor', '#eeeeee', 'text' );
+        }
+
+        if( $objSEC->is_option_available('migla_bglevelcoloractive') ){
+            $objO->update( 'migla_bglevelcoloractive', '#ba9cb5', 'text' );
+        }
+
+        if( $objSEC->is_option_available('migla_borderlevelcolor') ){
+            $objO->update( 'migla_borderlevelcolor', '#b0b0b0', 'text' );
+        }
+
+        if( $objSEC->is_option_available('migla_borderlevel') ){
+            $objO->update( 'migla_borderlevel', '1', 'text' );
+        }
+    }
+
+    die();
+}
+}
+
+if (!function_exists('TotalDonationsAjax_reset_progressbar')){
+function TotalDonationsAjax_reset_progressbar()
+{
+    $objSEC = new MIGLA_SEC;
+
+    if( $objSEC->is_this_the_owner( sanitize_text_field($_POST['auth_owner']), sanitize_text_field($_POST['auth_token']), sanitize_text_field($_POST['auth_session']) ) )
+    {
+       //THEME SETTINGS
+        $objO = new MIGLA_OPTION;
 
         $barinfo = "We have collected [total] of our [target] target. It is [percentage] of our goal for the [campaign] campaign";
 
-        $objO->update( 'migla_progbar_info', $barinfo, 'text' );
-        $objO->update( 'migla_bar_color' , '#428bca,1', 'text' );
-        $objO->update( 'migla_progressbar_background', '#bec7d3,1', 'text' );
-        $objO->update( 'migla_wellboxshadow', '#969899,1, 1,1,1,1', 'text' );
+        if( $objSEC->is_option_available('migla_progbar_info') ){
+            $objO->update( 'migla_progbar_info', $barinfo, 'text' );
+        }
+        if( $objSEC->is_option_available('migla_bar_color') ){
+            $objO->update( 'migla_bar_color' , '#428bca,1', 'text' );
+        }
+        if( $objSEC->is_option_available('migla_progressbar_background') ){
+            $objO->update( 'migla_progressbar_background', '#bec7d3,1', 'text' );
+        }
+        if( $objSEC->is_option_available('migla_wellboxshadow') ){
+            $objO->update( 'migla_wellboxshadow', '#969899,1, 1,1,1,1', 'text' );
+        }
+        if( $objSEC->is_option_available('migla_borderRadius') ){
+            $objO->update( 'migla_borderRadius', '8,8,8,8', 'text' );
+        }
 
         $arr = array( 'Stripes' => 'yes',
                         'Pulse' => 'yes',
@@ -900,13 +963,98 @@ function TotalDonationsAjax_reset_theme()
                         'Percentage' => 'yes'
                     );
 
-        $objO->update( 'migla_bar_style_effect' , $arr, 'array' );
+        if( $objSEC->is_option_available('migla_bar_style_effect') ){
+            $objO->update( 'migla_bar_style_effect' , $arr, 'array' );
+        }
     }
 
     die();
 }
 }
 
+if (!function_exists('TotalDonationsAjax_reset_circle')){
+function TotalDonationsAjax_reset_circle()
+{
+    $objSEC = new MIGLA_SEC;
+
+    if( $objSEC->is_this_the_owner( sanitize_text_field($_POST['auth_owner']), sanitize_text_field($_POST['auth_token']), sanitize_text_field($_POST['auth_session']) ) )
+    {
+       //THEME SETTINGS
+        $objO = new MIGLA_OPTION;
+
+        $circle = array();
+        $circle['size'] = 250;
+        $circle['start_angle'] = 0; 
+        $circle['thickness'] = 20;
+        $circle['reverse'] = 'yes';
+        $circle['line_cap'] = 'round';
+        $circle['fill'] = '#428bca';
+        $circle['animation'] = 'back_forth';
+        $circle['inside'] = 'percentage';
+        $circle['inner_font_size'] = '32';
+
+        if( $objSEC->is_option_available('migla_circle_settings') ){
+            $objO->update( 'migla_circle_settings', $circle, 'array' );
+        }
+        if( $objSEC->is_option_available('migla_circle_text1') ){
+            $objO->update( 'migla_circle_text1', 'Total', 'text' );
+        }
+        if( $objSEC->is_option_available('migla_circle_text2') ){
+            $objO->update( 'migla_circle_text2', 'Target', 'text' );
+        }
+        if( $objSEC->is_option_available('migla_circle_text3') ){    
+            $objO->update( 'migla_circle_text3', 'Donor', 'text' );
+        }
+        if( $objSEC->is_option_available('migla_circle_textalign') ){
+            $objO->update( 'migla_circle_textalign', 'left_right', 'text' );
+        }
+    }
+
+    die();
+}
+}
+
+if(!function_exists('TotalDonationsAjax_update_circle_layout')){
+function TotalDonationsAjax_update_circle_layout()
+{
+    $objO = new MIGLA_OPTION;
+    $objSEC = new MIGLA_SEC;
+
+    if( $objSEC->is_this_the_owner( $_POST['auth_owner'], $_POST['auth_token'], $_POST['auth_session']) )
+    {
+        if( $objSEC->is_option_available( 'migla_circle_textalign' ) )
+        {
+            $objO->update( 'migla_circle_textalign',
+                            $_POST['circle_textalign'],
+                           'text'
+                        );
+        }
+        if( $objSEC->is_option_available( 'migla_circle_text1' ) )
+        {
+            $objO->update( 'migla_circle_text1',
+                            $_POST['circle_text1'],
+                           'text'
+                        );
+        }
+        if( $objSEC->is_option_available( 'migla_circle_text2' ) )
+        {
+            $objO->update( 'migla_circle_text2',
+                            $_POST['circle_text2'],
+                           'text'
+                        );
+        }
+        if( $objSEC->is_option_available( 'migla_circle_text3' ) )
+        {
+            $objO->update( 'migla_circle_text3',
+                            $_POST['circle_text3'],
+                           'text'
+                        );
+        }
+    }
+
+    die();
+}
+}
 
 //Dashboard
 $ajax_dashboard_list = array( "TotalDonationsAjax_1y_GraphData",
@@ -2897,6 +3045,34 @@ function TotalDonationsAjax_resend_email()
 }
 }
 
+$ajax_custom_script = array("TotalDonationsAjax_dismiss_notice");
+
+if (!function_exists('TotalDonationsAjax_dismiss_notice')){
+function TotalDonationsAjax_dismiss_notice()
+{
+    $msg = "";
+
+    if( !wp_verify_nonce( sanitize_text_field($_POST['nonce']), 'migla-donate-nonce' ) ){
+        $msg = "unverified nonce";    
+    }else{
+        $objO = new MIGLA_OPTION;
+        $caller = sanitize_text_field($_POST['whois_dismiss']);
+
+        if( $caller == "paypal" ){
+            $objO->update( 'migla_paypal_isdismiss', 'yes', 'text' );
+             $msg = "update paypal notice";
+        }else if( $caller == "stripe" ){
+            $objO->update( 'migla_stripe_isdismiss', 'yes', 'text' );
+             $msg = "update stripe notice";
+        }        
+    }
+
+    echo $msg;
+    die();
+}
+}
+
+
 $ajax_list = array_merge( $ajax_campaign_list,
                           $ajax_frontend_list,
                           $ajax_theme_list,
@@ -2904,7 +3080,8 @@ $ajax_list = array_merge( $ajax_campaign_list,
                           $ajax_email_list,
                           $ajax_gtw_list ,
                           $ajax_formoption_list,
-                          $ajax_report_list
+                          $ajax_report_list,
+                          $ajax_custom_script
                          );
 
 if (  is_user_logged_in() )

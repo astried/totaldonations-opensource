@@ -238,7 +238,7 @@ function mg_set_emails()
             jQuery.ajax({
                 type : "post",
                 url :  miglaAdminAjax.ajaxurl,
-                data : {  action     : "miglaA_save_email_part2",
+                data : {  action     : "TotalDonationsAjax_save_email_part2",
                           email_id    : jQuery("#migla_email_id").val(),
                           language    : jQuery('#migla_language').val(),
                           email_type  : 'thankyou',

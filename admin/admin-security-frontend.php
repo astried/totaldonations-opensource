@@ -241,7 +241,7 @@ class migla_frontend_setting_class extends MIGLA_SEC
                   <a class='fa fa-caret-down' data-toggle='collapse' data-parent='.panel' href='#collapseAccess' aria-expanded='true'></a>
                 </div>
                 <h2 class='panel-title'><div class=' dashicons dashicons-lock'></div><?php echo __("Grant User Access:","migla-donation");?>
-                  <span class='panel-subtitle'><?php echo __("All Users other than administers will not be able to change user access.","migla-donation");?></span>
+                  <span class='panel-subtitle'><?php echo __("Only admin users are able to change user access.","migla-donation");?></span>
                 </h2>
               </header>
 

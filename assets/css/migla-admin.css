@@ -736,6 +736,10 @@ li.title.formheader {
 
 .mg_campaign_list .control-radio-sortable {
     margin-right: 0;
+    font-size: 12px;
+    padding-left: 0;
+    padding-right: 0;
+}
 }
 
 .clabel .control-label {
@@ -755,6 +759,7 @@ li.title.formheader {
 
 .control-radio-sortable span {
     padding: 0 0px 0 12px;
+    margin-left: -2px;
 }
 
 .ui-state-highlight-container {
@@ -3947,5 +3952,3 @@ a#btn-right-page, a#btn-home-page, a#btn-left-page {
 .btn-role.active span.role-check  {				
 	opacity: 1;				
 }
-
-

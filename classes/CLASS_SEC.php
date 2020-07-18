@@ -119,6 +119,7 @@ if ( !class_exists( 'MIGLA_SEC' ) )
 				'migla_circle_text1', //t
 				'migla_circle_text2', //t
 				'migla_circle_text3', //t
+				
 				'migla_2ndbgcolor', //t
 				'migla_2ndbgcolorb', //t
 				'migla_bglevelcolor', //t
@@ -204,7 +205,7 @@ if ( !class_exists( 'MIGLA_SEC' ) )
 				'migla_testSK',
 				'migla_testPK',
 				'migla_stripemode',
-        'migla_webhook_key',
+        		'migla_webhook_key',
 
 				'miglaStripeButtonChoice',
 				'migla_stripecssbtnstyle',
