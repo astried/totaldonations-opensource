@@ -8,7 +8,7 @@ if ( !class_exists( 'TotalDonations' ) )
 	    static function init_path()
 		{
 			if( ! defined( 'Totaldonations_VERSION' ) )
-				define( 'Totaldonations_VERSION', '3.0.6' );
+				define( 'Totaldonations_VERSION', '3.0.7' );
 
 			if( ! defined( 'Totaldonations_FREE' ) )
 				define( 'Totaldonations_FREE', 'yes' );

@@ -136,6 +136,11 @@ Always back up before updating Total Donations just in case.
 
 == Changelog ==
 
+= [3.0.7] - 2020-07-20 =
+
+* Quick Fix: campaign list issues
+* (Adding Feature!) Totaldonations Accountant Role with minimum as contributor role
+
 = [3.0.6] - 2020-07-18 =
 
 * Fix: Missing Ajax Functions for Email

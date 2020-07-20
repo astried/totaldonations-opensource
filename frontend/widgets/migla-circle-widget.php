@@ -18,7 +18,7 @@ class totaldonations_circle_widget extends WP_Widget
 		$control_ops = array( 'width' => 300, 'height' => 350, 'id_base' => 'totaldonations_circle_widget' );
 
 		/* Create the widget. */
-		WP_Widget::__construct( 'totaldonations_circle_widget', __('Total Donations Circle Widget','localization'), $widget_ops, $control_ops );
+		WP_Widget::__construct( 'totaldonations_circle_widget', __('Total Donations - Circle Widget','localization'), $widget_ops, $control_ops );
 	}
 
 	function widget( $args, $instance ) 

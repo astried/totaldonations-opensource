@@ -27,7 +27,7 @@ function mg_update_order()
 {
     var cmp_list = [];
 
-    jQuery(".formfield_campain").each(function(){
+    jQuery(".formfield_campaign").each(function(){
         cmp_list.push(jQuery(this).find(".cmp_id").val());
     });
 
@@ -160,7 +160,7 @@ function mg_save_campaign()
     jQuery("#miglaSaveCampaign").click(function(){
         var changeList = [];
 
-        jQuery(".formfield_campain").each(function(){
+        jQuery(".formfield_campaign").each(function(){
             var temp = {};
             temp.cmp_id     = jQuery(this).find(".cmp_id").val();
             temp.cmp_name   = jQuery(this).find(".cmp_label").val();
@@ -181,7 +181,9 @@ function mg_save_campaign()
             temp.new_shown = _status;
 
             changeList.push(temp);
-        })
+        });
+
+        console.log(changeList);
 
         var list = mg_get_campaignStructure();
 
@@ -280,7 +282,7 @@ function mg_get_campaignStructure()
    var fields = [];
    var i = 0;
    
-    jQuery('li.formfield_campain').each(function(){
+    jQuery('li.formfield_campaign').each(function(){
         fields.push(jQuery(this).find(".cmp_id").val());
     });
 
@@ -303,11 +305,11 @@ function mg_add_campaign_lines( label, target, form_id, id )
 
     newComer = newComer + "<li class='ui-state-default formfield clearfix formfield_campaign' data-showed='yes'>";
     newComer = newComer + "<input type='hidden' name='oldlabel' value='"+lbl+"' />";
-    newComer = newComer + "<input type='hidden' name='label' value='"+lbl+"' />";
-    newComer = newComer + "<input type='hidden' name='target' value='"+target+"' />";
-    newComer = newComer + "<input type='hidden' name='show'  value='1' />";
-    newComer = newComer + "<input type='hidden' name='form_id' class='cmp_formid' value='"+form_id+"' />";
-    newComer = newComer + "<input type='hidden' name='id' class='cmp_id'  value='"+id+"' />";
+    newComer = newComer + "<input type='hidden' class='cmp_label' name='label' value='"+lbl+"' />";
+    newComer = newComer + "<input type='hidden' class='cmp_target' name='target' value='"+target+"' />";
+    newComer = newComer + "<input type='hidden' class='cmp_shown' name='show'  value='1' />";
+    newComer = newComer + "<input type='hidden' class='cmp_formid' name='form_id' value='"+form_id+"' />";
+    newComer = newComer + "<input type='hidden' class='cmp_id' name='id' value='"+id+"' />";
     newComer = newComer + "<div class='col-sm-1 hidden-xs'><label  class='control-label'>Campaign</label></div>";
     newComer = newComer + "<div class='col-sm-2 col-xs-12'><input type='text' class='labelChange' name='' placeholder='";
     newComer = newComer + lbl + "' value='" + lbl + "' /></div>";
@@ -321,7 +323,7 @@ function mg_add_campaign_lines( label, target, form_id, id )
     newComer = newComer + '<input type="text" value="[totaldonations_progressbar id=&#39;2&#39;]" class="mg_label-shortcode">';
     newComer = newComer + "</div>";
 
-    newComer = newComer + "<div class='col-sm-2 col-xs-12'>";
+    newComer = newComer + "<div class='col-sm-2 col-xs-12 row'>";
     newComer = newComer + '<input type="text" value="[totaldonations_circlebar id=&#39;2&#39;]" class="mg_label-shortcode">';
     newComer = newComer + "</div>";
 
